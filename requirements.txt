@@ -1,3 +1,4 @@
 geopandas
 git+git://github.com/giswqs/leafmap
 streamlit
+streamlit-folium
