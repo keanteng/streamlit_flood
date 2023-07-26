@@ -21,7 +21,7 @@ st.sidebar.info(
 st.title("Flood Incidents in Malaysia")
 
 button = st.slider("Year", 2015,2022,2022)
-data = pd.read_csv('Flood Data Updated Geocoded.csv')
+data = pd.read_csv('data/Flood Data Updated Geocoded.csv')
 
 if button == 2015:
     data = data[data['Year'] == 2015]
@@ -46,9 +46,9 @@ with st.expander("Source Code (Click to Expand)"):
         m = leafmap.Map(center=[4, 108], zoom=5)
         
         cities = data
-        regions = 'countries.geojson'
+        regions = 'data/countries.geojson'
 
-        m.add_geojson(regions)
+        m.add_geojson(regions, layer_name="Malaysia")
         m.add_points_from_xy(
             cities,
             x="Longitude",
