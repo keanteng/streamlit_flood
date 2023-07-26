@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 
 st.sidebar.info(
     """
-    - GitHub repository: 
+    - GitHub repository: <https://github.com/keanteng/streamlit_flood>
     """
 )
 
