@@ -21,7 +21,9 @@ st.sidebar.info(
 st.title("Flood Incidents in Malaysia")
 
 button = st.slider("Year", 2015,2022,2022)
-data = pd.read_csv('data/Flood Data Updated Geocoded.csv')
+data = pd.read_csv('data/all_states_all_years_geocoded.csv')
+data[['Year']] = data[['Year']].astype(int)
+data = data[['Year', 'Date','State', 'Region', 'Place', 'Latitude','Longitude']]
 
 if button == 2015:
     data = data[data['Year'] == 2015]
