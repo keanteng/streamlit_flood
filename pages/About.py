@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
 st.set_page_config(layout="wide")
 
@@ -27,3 +30,6 @@ st.markdown(
 
 st.info("👈Check out the maps on the list beside to see how the map works")
 
+data = pd.read_csv("data/all_states_all_years_geocoded.csv")
+data = pd.DataFrame(data[['Year']],data[['State']])
+st.area_chart(data)
