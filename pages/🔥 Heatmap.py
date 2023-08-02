@@ -4,23 +4,32 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
+st.sidebar.title("Resources:")
 st.sidebar.info(
     """
     - GitHub repository: [streamlit_flood](https://github.com/keanteng/streamlit_flood)
+    - Data sources: [Flood Data](https://www.water.gov.my/)
     """
 )
 
-st.sidebar.title("Created By")
+st.sidebar.title("Created By:")
 st.sidebar.info(
     """
-  Khor Kean Teng
-  - Intern, DGA, JPS
+  Khor Kean Teng | Intern, DGA, JPS, Bank Negara Malaysia | [GitHub](https://github.com/keanteng) | [LinkedIn](https://www.linkedin.com/in/khorkeanteng/)
     """
 )
 
-st.title("Flood Incidents in Malaysia")
+st.title("Heatmap")
+st.markdown(
+    """
+    Heatmaps are a great way to visualize the density of data points on a map. It shows the density of flood incidents each state
+    where red areas have particularly more flood incidents. 
+    
+    As a general rule of thumb, location near rivers and coastal areas are more prone to flooding.
+    """
+)
 
-button = st.slider("Year", 2015,2022,2022)
+button = st.slider("Year", 2015,2022,2015)
 data = pd.read_csv('data/all_states_all_years_geocoded.csv')
 
 if button == 2015:
@@ -44,7 +53,10 @@ with st.expander("Source Code (Click to Expand)"):
     with st.echo():
 
         filepath = "data/Flood Data Updated Geocoded.csv"
-        m = leafmap.Map(center=[4, 108], zoom=5, tiles="stamentoner")
+        m = leafmap.Map(center=[4, 108], zoom=5)
+        regions = 'data/countries.geojson'
+
+        m.add_geojson(regions, layer_name="Malaysia")
         m.add_heatmap(
             data,
             latitude="Latitude",

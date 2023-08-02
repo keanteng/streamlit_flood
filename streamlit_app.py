@@ -1,62 +1,62 @@
 import streamlit as st
-import leafmap.foliumap as leafmap
 import pandas as pd
+import plotly.express as px
 
 st.set_page_config(layout="wide")
 
+st.sidebar.title("Resources:")
 st.sidebar.info(
     """
     - GitHub repository: [streamlit_flood](https://github.com/keanteng/streamlit_flood)
+    - Data sources: [Flood Data](https://www.water.gov.my/)
     """
 )
 
-st.sidebar.title("Created By")
+st.sidebar.title("Created By:")
 st.sidebar.info(
     """
-  Khor Kean Teng
-  - Intern, DGA, JPS
+  Khor Kean Teng | Intern, DGA, JPS, Bank Negara Malaysia | [GitHub](https://github.com/keanteng) | [LinkedIn](https://www.linkedin.com/in/khorkeanteng/)
     """
 )
 
-st.title("Flood Incidents in Malaysia")
+st.title("👋Welcome!")
 
-button = st.slider("Year", 2015,2022,2022)
-data = pd.read_csv('data/all_states_all_years_geocoded.csv')
-data[['Year']] = data[['Year']].astype(int)
-data = data[['Year', 'Date','State', 'Region', 'Place', 'Latitude','Longitude']]
+st.markdown(
+    """
+    This is a web app created using [streamlit](https://streamlit.io/) to visualize flood incidents in Malaysia from the year 2015 - 2022. The side bar menu
+    provide navigation to different types of maps. The map is interactive, you can zoom in and out, and click on the markers to see.
+    
+    The data for this project is obtained from the annual report published by the Department of Irrigation and Drainage Malaysia (JPS).
+    The data is available on their website [here](https://www.water.gov.my/). The data is then geocoded using [Nominatim Geocoder](https://opencagedata.com/).
+    
+    All the resources used in this project is available on my [GitHub repo](https://github.com/keanteng/streamlit_flood). Feel free to explore! 😁
+    """
+)
 
-if button == 2015:
-    data = data[data['Year'] == 2015]
-elif button == 2016:
-    data = data[data['Year'] == 2016]
-elif button == 2017:
-    data = data[data['Year'] == 2017]
-elif button == 2018:
-    data = data[data['Year'] == 2018]
-elif button == 2019:
-    data = data[data['Year'] == 2019]
-elif button == 2020:
-    data = data[data['Year'] == 2020]
-elif button == 2021:
-    data = data[data['Year'] == 2021]
-else:
-    data = data[data['Year'] == 2022]
+st.info("Check out the maps on the list to explore more. Also, scroll down to see some flood statistics! 👇")
 
-with st.expander("Source Code (Click to Expand)"):
-    with st.echo():
+data = pd.read_csv("data/all_states_all_years_geocoded.csv")
 
-        m = leafmap.Map(center=[4, 108], zoom=5)
-        
-        cities = data
-        regions = 'data/countries.geojson'
+# get the total incidents per year
+data1 = pd.DataFrame(data[['Year']])
+data1 = data1.groupby(['Year']).value_counts().reset_index(name='Total Incidents')
 
-        m.add_geojson(regions, layer_name="Malaysia")
-        m.add_points_from_xy(
-            cities,
-            x="Longitude",
-            y="Latitude",
-            icon_names=['gear', 'map', 'leaf', 'globe'],
-        )
+# plotting
+fig1 = px.bar(data1, x="Year", y="Total Incidents", color= "Year", title="Total Flood Incidents in Malaysia (2015- 2021)")
 
+st.plotly_chart(fig1, use_container_width=True)
 
-m.to_streamlit(height=700)
+# get the total incidents per state
+data2 = pd.DataFrame(data[['Year', 'State']])
+data2 = data2.groupby(['Year', 'State']).value_counts().reset_index(name='Total Incidents')
+data2.head()
+
+button = st.slider("Year", 2015,2022,2015)
+
+data2 = data2[data2['Year'] == button]
+data2 = pd.DataFrame(data2[['State', 'Total Incidents']])
+data2.head()
+
+# plot
+fig2 = px.bar(data2, x="State", y="Total Incidents", color = "State", title="Flood Incidents by State")
+st.plotly_chart(fig2, use_container_width=True)
