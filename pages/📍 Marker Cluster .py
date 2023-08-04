@@ -28,7 +28,7 @@ st.markdown(
 )
 
 button = st.slider("Year", 2015,2022,2015)
-data = pd.read_csv('data/all_states_all_years_geocoded.csv')
+data = pd.read_csv('analytics/data2/all_states_all_years_geocoded.csv')
 data[['Year']] = data[['Year']].astype(int)
 data = data[['Year', 'Date','State', 'Region', 'Place', 'Latitude','Longitude']]
 
@@ -55,7 +55,7 @@ with st.expander("Source Code (Click to Expand)"):
         m = leafmap.Map(center=[4, 108], zoom=5)
         
         cities = data
-        regions = 'data/countries.geojson'
+        regions = 'analytics/data2/countries.geojson'
 
         m.add_geojson(regions, layer_name="Malaysia")
         m.add_points_from_xy(

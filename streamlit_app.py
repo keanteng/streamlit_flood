@@ -35,7 +35,7 @@ st.markdown(
 
 st.info("Check out the maps on the list to explore more. Also, scroll down to see some flood statistics! 👇")
 
-data = pd.read_csv("data/all_states_all_years_geocoded.csv")
+data = pd.read_csv("analytics/data2/all_states_all_years_geocoded.csv")
 
 # get the total incidents per year
 data1 = pd.DataFrame(data[['Year']])

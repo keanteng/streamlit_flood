@@ -30,7 +30,7 @@ st.markdown(
 )
 
 button = st.slider("Year", 2015,2022,2015)
-data = pd.read_csv('data/all_states_all_years_geocoded.csv')
+data = pd.read_csv('analytics/data2/all_states_all_years_geocoded.csv')
 
 if button == 2015:
     data = data[data['Year'] == 2015]
@@ -52,9 +52,9 @@ else:
 with st.expander("Source Code (Click to Expand)"):
     with st.echo():
 
-        filepath = "data/Flood Data Updated Geocoded.csv"
+        filepath = "analytics/data2/Flood Data Updated Geocoded.csv"
         m = leafmap.Map(center=[4, 108], zoom=5)
-        regions = 'data/countries.geojson'
+        regions = 'analytics/data2/countries.geojson'
 
         m.add_geojson(regions, layer_name="Malaysia")
         m.add_heatmap(
